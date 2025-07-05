@@ -2,92 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jayakumar | Portfolio</title>
   <style>
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --subtext-color: #aaa;
+      --btn-bg: #fff;
+      --btn-color: #000;
+      --border-color: #fff;
+      --icon-color: #fff;
+    }
+
+    body.light {
+      --bg-color: #fff;
+      --text-color: #000;
+      --subtext-color: #555;
+      --btn-bg: #000;
+      --btn-color: #fff;
+      --border-color: #000;
+      --icon-color: #000;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
     }
+
     body {
-      background-color: #000;
-      color: #fff;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
     }
+
+    .theme-toggle, .login-link {
+      position: absolute;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--icon-color);
+      transition: color 0.3s;
+      padding: 0.5rem;
+    }
+
+    .theme-toggle {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .login-link {
+      top: 1rem;
+      left: 1rem;
+      text-decoration: underline;
+    }
+
     header {
       padding: 2rem;
       text-align: center;
       animation: fadeIn 1s ease-in;
     }
+
     header h1 {
       font-size: 3rem;
       margin-bottom: 0.5rem;
     }
-    header p {
+
+    header p, #welcomeMessage {
       font-size: 1.2rem;
-      color: #aaa;
+      color: var(--subtext-color);
     }
+
     section {
       max-width: 800px;
       margin: 3rem auto;
       padding: 0 1rem;
+      position: relative;
     }
+
     h2 {
-      border-bottom: 2px solid #fff;
+      border-bottom: 2px solid var(--border-color);
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
     }
+
     .fade {
       animation: fadeIn 1.5s ease-in;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     footer {
       text-align: center;
       padding: 2rem;
-      color: #888;
+      color: var(--subtext-color);
       font-size: 0.9rem;
     }
+
     a {
-      color: #fff;
+      color: var(--text-color);
       text-decoration: underline;
     }
+
     .btn {
       display: inline-block;
       padding: 0.5rem 1rem;
       margin-top: 1rem;
-      background: #fff;
-      color: #000;
+      background: var(--btn-bg);
+      color: var(--btn-color);
       text-decoration: none;
+      border: none;
+      cursor: pointer;
       transition: 0.3s ease;
     }
+
     .btn:hover {
       background: #ccc;
+      color: #000;
+    }
+
+    .more-btn {
+      display: none;
+      position: absolute;
+      bottom: -2.5rem;
+      right: 1rem;
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    section:hover .more-btn {
+      display: inline-block;
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
-<body>
+<body onload="showWelcomeUser()">
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeButton">🌙</button>
+  <a class="login-link" href="login.html">Login</a>
+
   <header>
     <h1>Jayakumar</h1>
     <p>Student | Web Developer | Minimalist</p>
+    <p id="welcomeMessage"></p>
   </header>
 
-  <section class="fade">
+  <section class="fade" id="about">
     <h2>About Me</h2>
     <p>Hello! I'm Jayakumar, a student and passionate web developer who loves clean, simple, and effective design. I enjoy building personal projects, learning new technologies, and bringing ideas to life through the web.</p>
+    <a href="about.html" class="more-btn">Explore More →</a>
   </section>
 
-  <section class="fade">
+  <section class="fade" id="projects">
     <h2>Projects</h2>
     <ul>
       <li><strong>Portfolio Website</strong> – This site, built using HTML, CSS, and love.</li>
       <li><strong>Travel Blog Template</strong> – A responsive travel-themed site made with HTML and CSS only.</li>
       <li><strong>Simple To-Do List UI</strong> – A stylish to-do list front-end using pure HTML and CSS.</li>
     </ul>
+    <a href="projects.html" class="more-btn">See All Projects →</a>
   </section>
 
   <section class="fade">
@@ -102,5 +188,21 @@
   <footer>
     <p>&copy; 2025 Jayakumar. All rights reserved.</p>
   </footer>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const button = document.getElementById('themeButton');
+      body.classList.toggle('light');
+      button.textContent = body.classList.contains('light') ? '☀️' : '🌙';
+    }
+
+    function showWelcomeUser() {
+      const user = localStorage.getItem('username');
+      if (user) {
+        document.getElementById('welcomeMessage').innerText = `Welcome back, ${user}!`;
+      }
+    }
+  </script>
 </body>
 </html>
