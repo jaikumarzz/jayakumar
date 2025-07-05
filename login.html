@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    input {
+      padding: 0.5rem;
+      margin: 0.5rem;
+      width: 250px;
+      background: #222;
+      color: white;
+      border: 1px solid #555;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      background: white;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+
+    a {
+      color: #ccc;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h2>Login / Sign Up</h2>
+  <input type="text" id="username" placeholder="Username" /><br />
+  <input type="password" id="password" placeholder="Password" /><br />
+  <button onclick="handleLogin()">Login</button>
+  <a href="#" onclick="handleSignup()">Or Sign Up</a>
+
+  <script>
+    function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const storedUser = localStorage.getItem('username');
+      const storedPass = localStorage.getItem('password');
+
+      if (username === storedUser && password === storedPass) {
+        alert('Login Successful');
+        window.location.href = 'index.html';
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+
+    function handleSignup() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        alert('Please fill both fields');
+        return;
+      }
+
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+      alert('Signup Successful. Now login.');
+    }
+  </script>
+</body>
+</html>
