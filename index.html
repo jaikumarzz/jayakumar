@@ -25,18 +25,17 @@
       --icon-color: #000;
     }
 
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      transition: background 0.3s, color 0.3s;
     }
 
     .theme-toggle, .login-link {
@@ -64,12 +63,16 @@
     header {
       padding: 2rem;
       text-align: center;
-      animation: fadeIn 1s ease-in;
     }
 
     header h1 {
       font-size: 3rem;
       margin-bottom: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    header h1:hover {
+      transform: scale(1.05);
     }
 
     header p, #welcomeMessage {
@@ -80,8 +83,21 @@
     section {
       max-width: 800px;
       margin: 3rem auto;
-      padding: 0 1rem;
+      padding: 1rem;
       position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+      transition: box-shadow 0.4s ease;
+    }
+
+    section:nth-of-type(2) { animation-delay: 0.2s; }
+    section:nth-of-type(3) { animation-delay: 0.4s; }
+    section:nth-of-type(4) { animation-delay: 0.6s; }
+    section:nth-of-type(5) { animation-delay: 0.8s; }
+
+    section:hover {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
     }
 
     h2 {
@@ -90,13 +106,15 @@
       margin-bottom: 1rem;
     }
 
-    .fade {
-      animation: fadeIn 1.5s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     footer {
@@ -111,7 +129,7 @@
       text-decoration: underline;
     }
 
-    .btn {
+    .btn, .more-btn {
       display: inline-block;
       padding: 0.5rem 1rem;
       margin-top: 1rem;
@@ -120,37 +138,32 @@
       text-decoration: none;
       border: none;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: 0.3s ease, transform 0.3s ease;
     }
 
-    .btn:hover {
+    .btn:hover, .more-btn:hover {
       background: #ccc;
       color: #000;
+      transform: scale(1.05);
     }
 
     .more-btn {
-      display: none;
       position: absolute;
       bottom: -2.5rem;
       right: 1rem;
-      background: var(--btn-bg);
-      color: var(--btn-color);
-      padding: 0.4rem 1rem;
       border-radius: 8px;
-      text-decoration: none;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     section:hover .more-btn {
-      display: inline-block;
       opacity: 1;
       transform: translateY(0);
     }
   </style>
 </head>
-<body onload="showWelcomeUser()">
+<body>
   <button class="theme-toggle" onclick="toggleTheme()" id="themeButton">🌙</button>
   <a class="login-link" href="login.html">Login</a>
 
@@ -176,6 +189,12 @@
     <a href="projects.html" class="more-btn">See All Projects →</a>
   </section>
 
+  <section class="fade" id="files">
+    <h2>My Project Files</h2>
+    <p>You can explore all the files related to my work, demos, and experiments here.</p>
+    <a href="files.html" class="more-btn">Open Files →</a>
+  </section>
+
   <section class="fade">
     <h2>Contact</h2>
     <p>Email: <a href="mailto:jayakumar.sekar111@gmail.com">jayakumar.sekar111@gmail.com</a></p>
@@ -190,19 +209,43 @@
   </footer>
 
   <script>
-    function toggleTheme() {
-      const body = document.body;
-      const button = document.getElementById('themeButton');
-      body.classList.toggle('light');
-      button.textContent = body.classList.contains('light') ? '☀️' : '🌙';
+  // Toggle theme when button is clicked
+  function toggleTheme() {
+    const body = document.body;
+    const button = document.getElementById('themeButton');
+
+    if (body.classList.contains('light')) {
+      body.classList.remove('light');
+      button.textContent = '🌙';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      body.classList.add('light');
+      button.textContent = '☀️';
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // On page load, apply saved theme
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    const body = document.body;
+    const button = document.getElementById('themeButton');
+
+    if (savedTheme === 'light') {
+      body.classList.add('light');
+      button.textContent = '☀️';
+    } else {
+      body.classList.remove('light');
+      button.textContent = '🌙';
     }
 
-    function showWelcomeUser() {
-      const user = localStorage.getItem('username');
-      if (user) {
-        document.getElementById('welcomeMessage').innerText = `Welcome back, ${user}!`;
-      }
+    // Optional: show welcome message if stored
+    const user = localStorage.getItem('username');
+    if (user) {
+      document.getElementById('welcomeMessage').innerText = `Welcome back, ${user}!`;
     }
-  </script>
+  });
+</script>
+
 </body>
 </html>
